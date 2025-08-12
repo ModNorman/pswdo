@@ -1,0 +1,5 @@
+{
+  "name": "PSWDO AICS Demo",
+  "description": "A realistic demo of the Provincial Social Welfare and Development Office's (PSWDO) Assistance to Individuals in Crisis Situation (AICS) workflow for stakeholder review. This is a mobile-first responsive web application showcasing roles for Case Officers and PSWDO Heads, with mocked static data.",
+  "requestFramePermissions": []
+}
