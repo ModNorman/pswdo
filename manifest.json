@@ -2,7 +2,7 @@
   "name": "AICS Case Management Dashboard",
   "short_name": "AICS Dashboard",
   "description": "Mobile-first PWA for managing AICS cases at PSWDO.",
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#f3f4f6",
   "theme_color": "#2563eb",
