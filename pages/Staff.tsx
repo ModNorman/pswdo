@@ -645,22 +645,25 @@ const ReportsView: React.FC<{ data: AppState }> = ({ data }) => {
 
         // Top Return Reasons
         const returnReasons = data.cases.filter(c => c.status === CaseStatus.Returned && c.subReason).reduce((acc, c) => {
-            acc[c.subReason!] = (acc[c.subReason!] || 0) + 1;
+            acc[c.subReason! as string] = (typeof acc[c.subReason! as string] === 'number' ? acc[c.subReason! as string] : 0) + 1;
             return acc;
         }, {} as Record<string, number>);
-        const topReturnReasons = Object.entries(returnReasons).map(([name, count]) => ({name, count})).sort((a,b) => b.count - a.count);
+                const topReturnReasons = Object.entries(returnReasons)
+                    .map(([name, count]) => ({ name, count: Number(count) }))
+                    .sort((a, b) => Number(b.count) - Number(a.count));
 
         // Cases by Municipality
-        const casesByMuni = data.cases.reduce((acc, c) => {
-            const bene = data.beneficiaries.find(b => b.id === c.beneficiaryId);
-            if(bene) {
-                acc[bene.address.municipality] = (acc[bene.address.municipality] || 0) + 1;
-            }
-            return acc;
-        }, {} as Record<string, number>);
-        const topMunicipalities = Object.entries(casesByMuni).map(([name, count]) => ({name, count})).sort((a,b) => b.count - a.count).slice(0, 10);
-        
-        const mainRemaining = data.mainBudget.allocated - data.mainBudget.precommitted - data.mainBudget.disbursed;
+            const casesByMuni = data.cases.reduce((acc, c) => {
+                const bene = data.beneficiaries.find(b => b.id === c.beneficiaryId);
+                if(bene) {
+                    const muni = bene.address.municipality;
+                    acc[muni] = (Number(acc[muni]) || 0) + 1;
+                }
+                return acc;
+            }, {} as Record<string, number>);
+            const topMunicipalities = Object.entries(casesByMuni).map(([name, count]) => ({name, count: Number(count)})).sort((a,b) => Number(b.count) - Number(a.count)).slice(0, 10);
+
+            const mainRemaining = Number(data.mainBudget.allocated) - Number(data.mainBudget.precommitted) - Number(data.mainBudget.disbursed);
 
         // Approvals by Type
         const approvalsByType = data.cases
@@ -669,7 +672,7 @@ const ReportsView: React.FC<{ data: AppState }> = ({ data }) => {
                 acc[c.assistanceType] = (acc[c.assistanceType] || 0) + 1;
                 return acc;
             }, {} as Record<string, number>);
-        const approvalsByTypeData = Object.entries(approvalsByType).map(([name, value]) => ({ name, value }));
+    const approvalsByTypeData = Object.entries(approvalsByType).map(([name, value]) => ({ name, value: Number(value) }));
         
         // Disbursed by Source
         const disbursedBySource = data.ledger
@@ -679,7 +682,7 @@ const ReportsView: React.FC<{ data: AppState }> = ({ data }) => {
                 acc[sourceName] = (acc[sourceName] || 0) + c.amount;
                 return acc;
             }, {} as Record<string, number>);
-        const disbursedBySourceData = Object.entries(disbursedBySource).map(([name, value]) => ({ name, value }));
+    const disbursedBySourceData = Object.entries(disbursedBySource).map(([name, value]) => ({ name, value: Number(value) }));
 
         // Outcomes by Officer
         const outcomesByOfficer = data.cases
@@ -695,7 +698,7 @@ const ReportsView: React.FC<{ data: AppState }> = ({ data }) => {
                 return acc;
             }, {} as Record<string, { [key in CaseStatus]?: number }>);
 
-        const outcomesByOfficerData = Object.entries(outcomesByOfficer).map(([name, values]) => ({ name, ...values }));
+    const outcomesByOfficerData = Object.entries(outcomesByOfficer).map(([name, values]) => ({ name, ...(typeof values === 'object' && values !== null ? values : {}) }));
 
         return { avgProcDays, avgApprovalDays, topReturnReasons, topMunicipalities, mainRemaining, approvalsByTypeData, disbursedBySourceData, outcomesByOfficerData };
     }, [data]);
