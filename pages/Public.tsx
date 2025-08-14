@@ -167,21 +167,21 @@ const IntakePage: React.FC<{onNav: (view: PublicView) => void}> = ({onNav}) => {
                 return (
                     <div className="space-y-4">
                         <div className="grid sm:grid-cols-2 gap-4">
-                            <InputField label="Full Name" name="fullName" value={formData.fullName} onChange={handleFormChange} required />
-                            <SelectField label="Sex" name="sex" value={formData.sex} onChange={handleFormChange} required>
+                            <InputField label="Full Name" name="fullName" value={formData.fullName} onChange={handleFormChange} required tooltip="Enter your complete legal name as shown on your ID." />
+                            <SelectField label="Sex" name="sex" value={formData.sex} onChange={handleFormChange} required tooltip="Select your biological sex as indicated on your ID.">
                                 <option value="">Select Sex</option><option>Male</option><option>Female</option>
                             </SelectField>
-                            <InputField label="Birthdate" name="birthdate" type="date" value={formData.birthdate} onChange={handleFormChange} required />
-                            <InputField label="Place of Birth" name="placeOfBirth" value={formData.placeOfBirth} onChange={handleFormChange} required />
-                            <SelectField label="Civil Status" name="civilStatus" value={formData.civilStatus} onChange={handleFormChange} required>
+                            <InputField label="Birthdate" name="birthdate" type="date" value={formData.birthdate} onChange={handleFormChange} required tooltip="Enter your date of birth (MM/DD/YYYY)." />
+                            <InputField label="Place of Birth" name="placeOfBirth" value={formData.placeOfBirth} onChange={handleFormChange} required tooltip="Enter the city/municipality and province where you were born." />
+                            <SelectField label="Civil Status" name="civilStatus" value={formData.civilStatus} onChange={handleFormChange} required tooltip="Select your current marital status.">
                                 <option value="">Select Status</option><option>Single</option><option>Married</option><option>Widowed</option><option>Separated</option>
                             </SelectField>
-                            <InputField label="Educational Attainment" name="education" value={formData.education} onChange={handleFormChange} />
+                            <InputField label="Educational Attainment" name="education" value={formData.education} onChange={handleFormChange} tooltip="Enter your highest completed level of education." />
                         </div>
                         <div className="grid sm:grid-cols-3 gap-4">
-                            <InputField label="PhilID/ID Number" name="philId" value={formData.philId} onChange={handleFormChange} required />
-                            <InputField label="Contact #" name="contact" value={formData.contact} onChange={handleFormChange} required />
-                            <InputField label="Email (Optional)" name="email" type="email" value={formData.email} onChange={handleFormChange} />
+                            <InputField label="PhilID/ID Number" name="philId" value={formData.philId} onChange={handleFormChange} required tooltip="Enter your PhilSys ID or any valid government-issued ID number." />
+                            <InputField label="Contact #" name="contact" value={formData.contact} onChange={handleFormChange} required tooltip="Enter your active mobile or landline number." />
+                            <InputField label="Email (Optional)" name="email" type="email" value={formData.email} onChange={handleFormChange} tooltip="Enter your email address (optional, for notifications)." />
                         </div>
                         <div className="pt-4 border-t">
                             <div className="flex items-center">
@@ -190,11 +190,11 @@ const IntakePage: React.FC<{onNav: (view: PublicView) => void}> = ({onNav}) => {
                             </div>
                             {formData.hasRep && (
                                 <div className="grid sm:grid-cols-2 gap-4 mt-4 p-4 bg-gray-50 rounded-lg">
-                                    <InputField label="Rep. Full Name" name="repName" value={formData.repName} onChange={handleFormChange} required={formData.hasRep} />
-                                    <InputField label="Rep. Relationship" name="repRelationship" value={formData.repRelationship} onChange={handleFormChange} required={formData.hasRep} />
-                                    <InputField label="Rep. Contact #" name="repContact" value={formData.repContact} onChange={handleFormChange} required={formData.hasRep} />
-                                    <InputField label="Rep. ID Type & #" name="repIdNo" value={formData.repIdNo} onChange={handleFormChange} required={formData.hasRep} />
-                                    <InputField label="Authorization Doc Upload" type="file" name="repAuthFile" onChange={handleFileChange} required={formData.hasRep} />
+                                    <InputField label="Rep. Full Name" name="repName" value={formData.repName} onChange={handleFormChange} required={formData.hasRep} tooltip="Enter the full name of your authorized representative." />
+                                    <InputField label="Rep. Relationship" name="repRelationship" value={formData.repRelationship} onChange={handleFormChange} required={formData.hasRep} tooltip="State your relationship to the representative (e.g., spouse, child, sibling)." />
+                                    <InputField label="Rep. Contact #" name="repContact" value={formData.repContact} onChange={handleFormChange} required={formData.hasRep} tooltip="Enter the contact number of your representative." />
+                                    <InputField label="Rep. ID Type & #" name="repIdNo" value={formData.repIdNo} onChange={handleFormChange} required={formData.hasRep} tooltip="Enter the ID type and number of your representative." />
+                                    <InputField label="Authorization Doc Upload" type="file" name="repAuthFile" onChange={handleFileChange} required={formData.hasRep} tooltip="Upload the authorization document for your representative." />
                                 </div>
                             )}
                         </div>

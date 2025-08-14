@@ -154,27 +154,56 @@ export const Tooltip: React.FC<{ content: string; children: ReactNode }> = ({ co
 
 
 const FormFieldWrapper: React.FC<{ label: string; tooltip?: string; htmlFor: string; children: ReactNode }> = ({ label, tooltip, htmlFor, children }) => (
-    <div>
-        <label htmlFor={htmlFor} className="flex items-center text-sm font-medium text-brand-gray-700 mb-1">
-            <span>{label}</span>
-            {tooltip && (
-                <Tooltip content={tooltip}>
-                    <button type="button" aria-describedby="tooltip-content" className="ml-1.5 leading-none">
-                        <InfoIcon className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-                    </button>
-                </Tooltip>
-            )}
+  <div>
+    {tooltip && React.Children.toArray(children).length === 1 && React.isValidElement(children) && children.props.type === 'file' ? (
+      <Tooltip content={tooltip}>
+        <label htmlFor={htmlFor} className="flex items-center text-sm font-medium text-brand-gray-700 mb-1 cursor-pointer">
+          <span>{label}</span>
+          <span className="ml-1.5 leading-none inline-flex">
+            <InfoIcon className="h-4 w-4 text-brand-blue" />
+          </span>
         </label>
         {children}
-    </div>
+      </Tooltip>
+    ) : (
+      <>
+        <label htmlFor={htmlFor} className="flex items-center text-sm font-medium text-brand-gray-700 mb-1">
+          <span>{label}</span>
+          {tooltip && (
+            <Tooltip content={tooltip}>
+              <span className="ml-1.5 leading-none inline-flex">
+                <InfoIcon className="h-4 w-4 text-brand-blue" />
+              </span>
+            </Tooltip>
+          )}
+        </label>
+        {children}
+      </>
+    )}
+  </div>
 );
 
 
 export const InputField: React.FC<React.InputHTMLAttributes<HTMLInputElement> & { label: string; tooltip?: string }> = ({ label, tooltip, id, ...props }) => {
   const inputId = id || label.toLowerCase().replace(/\s/g, '-');
+  const isFile = props.type === 'file';
   return (
-    <FormFieldWrapper label={label} tooltip={tooltip} htmlFor={inputId}>
-      <input id={inputId} {...props} className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm disabled:bg-gray-100 text-brand-gray-900" />
+    <FormFieldWrapper label={label} htmlFor={inputId}>
+      {tooltip ? (
+        isFile ? (
+          <Tooltip content={tooltip}>
+            <div className="w-full">
+              <input id={inputId} {...props} className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm disabled:bg-gray-100 text-brand-gray-900" />
+            </div>
+          </Tooltip>
+        ) : (
+          <Tooltip content={tooltip}>
+            <input id={inputId} {...props} className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm disabled:bg-gray-100 text-brand-gray-900" />
+          </Tooltip>
+        )
+      ) : (
+        <input id={inputId} {...props} className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm disabled:bg-gray-100 text-brand-gray-900" />
+      )}
     </FormFieldWrapper>
   );
 };

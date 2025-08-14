@@ -359,16 +359,16 @@ const CaseDetailView: React.FC<{ aCase: Case; data: AppState, role: Role, onClos
                             <p className="text-sm text-red-600 p-2 bg-red-50 rounded-md">Missing required documents. Cannot forward for approval.</p>}
                     </ul>
                 );
-            case 'Recommendation':
-                 if (role === Role.CaseOfficer && aCase.status === CaseStatus.Screening) {
-                     return <div className="space-y-4">
-                         <InputField label="Recommended Amount" type="number" value={editableRecommendation.amount} onChange={e => setEditableRecommendation(p => ({...p, amount: e.target.value}))} required/>
-                         <SelectField label="Modality" value={editableRecommendation.modality} onChange={e => setEditableRecommendation(p => ({...p, modality: e.target.value as Modality}))}>
-                            {Object.values(Modality).map(m => <option key={m}>{m}</option>)}
-                         </SelectField>
-                         <InputField label="Basis/Quotation Link" value={editableRecommendation.basisLink} onChange={e => setEditableRecommendation(p => ({...p, basisLink: e.target.value}))} />
-                     </div>
-                 }
+                        case 'Recommendation':
+                             if (role === Role.CaseOfficer && aCase.status === CaseStatus.Screening) {
+                                 return <div className="space-y-4">
+                                     <InputField label="Recommended Amount" type="number" value={editableRecommendation.amount} onChange={e => setEditableRecommendation(p => ({...p, amount: e.target.value}))} required/>
+                                     <SelectField label="Modality" value={editableRecommendation.modality} onChange={e => setEditableRecommendation(p => ({...p, modality: e.target.value as Modality}))}>
+                                        {Object.values(Modality).map(m => <option key={m}>{m}</option>)}
+                                     </SelectField>
+                                     <InputField label="Basis/Quotation Link" value={editableRecommendation.basisLink} onChange={e => setEditableRecommendation(p => ({...p, basisLink: e.target.value}))} />
+                                 </div>
+                             }
                 return (
                      <div className="space-y-4">
                         <DetailItem label="assistanceType" value={aCase.assistanceType} />
@@ -429,16 +429,71 @@ const CaseDetailView: React.FC<{ aCase: Case; data: AppState, role: Role, onClos
                 </div>
             </div>
 
-                        <div className="w-full max-w-full min-w-0 overflow-x-hidden">
-                            <Tabs tabs={detailTabs.map(t => t)} activeTab={activeDetailTab} onTabClick={(tab) => setActiveDetailTab(tab)} />
-                        </div>
+            <div className="w-full max-w-full min-w-0 overflow-x-hidden">
+                <Tabs tabs={detailTabs.map(t => t)} activeTab={activeDetailTab} onTabClick={(tab) => setActiveDetailTab(tab)} />
+            </div>
             <div className="py-6">
                 {renderContent()}
             </div>
-            
+
             <div className="border-t pt-4 mt-4 flex justify-end space-x-3">
                 <Button variant="secondary" onClick={onClose}>Close</Button>
-                {canForward && <Button disabled={!canForward}>{t('forwardToHead')}</Button>}
+                {role === Role.CaseOfficer && aCase.status === CaseStatus.New && (
+                    <Button
+                        variant="primary"
+                        onClick={() => {
+                            aCase.officerName = data.profiles[role]?.name || 'You';
+                            aCase.status = CaseStatus.Screening;
+                            aCase.history = [
+                                ...aCase.history,
+                                {
+                                    status: CaseStatus.Screening,
+                                    date: new Date().toISOString(),
+                                    actor: Role.CaseOfficer,
+                                    notes: 'Case taken up and assigned to self.'
+                                }
+                            ];
+                            alert('Case assigned to you and moved to Screening.');
+                            onClose();
+                        }}
+                        style={{ minWidth: 180 }}
+                    >
+                        Take Up & Assign to Self
+                    </Button>
+                )}
+                {role === Role.CaseOfficer && aCase.status === CaseStatus.Returned && (
+                    <Button
+                        variant="primary"
+                        onClick={() => {
+                            aCase.status = CaseStatus.Screening;
+                            aCase.history = [
+                                ...aCase.history,
+                                {
+                                    status: CaseStatus.Screening,
+                                    date: new Date().toISOString(),
+                                    actor: Role.CaseOfficer,
+                                    notes: 'Case remediated and moved back to Screening.'
+                                }
+                            ];
+                            alert('Case marked as remediated and moved to Screening.');
+                            onClose();
+                        }}
+                        style={{ minWidth: 140 }}
+                    >
+                        Remediated
+                    </Button>
+                )}
+                {role === Role.CaseOfficer && aCase.status === CaseStatus.Screening && (
+                    <Button
+                        variant="primary"
+                        disabled={!(allRequiredDocsVerified && editableRecommendation.amount)}
+                        onClick={() => {
+                            alert('Case forwarded to Head for approval!');
+                        }}
+                    >
+                        {t('forwardToHead')}
+                    </Button>
+                )}
                 {canApprove && <Button variant="secondary">{t('return')}</Button>}
                 {canApprove && <Button>{t('approve')}</Button>}
                 {canReturn && <Button>{t('returnToOfficer')}</Button>}

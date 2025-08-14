@@ -52,6 +52,22 @@ const translations = {
     pswdoHead: "PSWDO Head",
     viewDashboard: "View Dashboard",
     recommendedAmount: "Recommended Amount"
+  ,
+  // Intake Tooltips
+  tt_fullName: "Enter your complete legal name as shown on your ID.",
+  tt_sex: "Select your biological sex as indicated on your ID.",
+  tt_birthdate: "Enter your date of birth (MM/DD/YYYY).",
+  tt_placeOfBirth: "Enter the city/municipality and province where you were born.",
+  tt_civilStatus: "Select your current marital status.",
+  tt_education: "Enter your highest completed level of education.",
+  tt_philId: "Enter your PhilSys ID or any valid government-issued ID number.",
+  tt_contact: "Enter your active mobile or landline number.",
+  tt_email: "Enter your email address (optional, for notifications).",
+  tt_repName: "Enter the full name of your authorized representative.",
+  tt_repRelationship: "State your relationship to the representative (e.g., spouse, child, sibling).",
+  tt_repContact: "Enter the contact number of your representative.",
+  tt_repIdNo: "Enter the ID type and number of your representative.",
+  tt_repAuthFile: "Upload the authorization document for your representative.",
   },
   fil: {
     // Public
@@ -103,6 +119,22 @@ const translations = {
     pswdoHead: "PSWDO Head",
     viewDashboard: "Tingnan ang Dashboard",
     recommendedAmount: "Inirekumendang Halaga"
+  ,
+  // Intake Tooltips (Taglish)
+  tt_fullName: "Ilagay ang buong legal name mo, same sa ID mo.",
+  tt_sex: "Piliin ang sex mo, base sa ID mo.",
+  tt_birthdate: "Ilagay ang birthday mo (MM/DD/YYYY).",
+  tt_placeOfBirth: "Ilagay ang city/municipality at province kung saan ka pinanganak.",
+  tt_civilStatus: "Piliin ang civil status mo ngayon.",
+  tt_education: "Ilagay ang highest education na natapos mo.",
+  tt_philId: "Ilagay ang PhilSys ID o kahit anong valid government ID number mo.",
+  tt_contact: "Ilagay ang active mobile o landline number mo.",
+  tt_email: "Ilagay ang email mo (optional, para sa notifications).",
+  tt_repName: "Ilagay ang buong pangalan ng authorized representative mo.",
+  tt_repRelationship: "Ilagay ang relationship mo sa representative (hal. asawa, anak, kapatid).",
+  tt_repContact: "Ilagay ang contact number ng representative mo.",
+  tt_repIdNo: "Ilagay ang ID type at number ng representative mo.",
+  tt_repAuthFile: "I-upload ang authorization document para sa representative mo.",
   },
 };
 
